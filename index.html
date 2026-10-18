@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mongol Dropship - Шилдэг бүтээгдэхүүнүүд</title>
+    <style>
+        /* ========== ЕРӨНХИЙ ЗАГВАР ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* ========== ДЭЭД НАВИГАЦ ========== */
+        header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #e94560;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #e94560;
+        }
+
+        .cart-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-btn:hover {
+            background: #c81e45;
+        }
+
+        /* ========== ГЭРР БАННЕР ========== */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200') center/cover;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .hero button {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .hero button:hover {
+            transform: scale(1.05);
+            background: #c81e45;
+        }
+
+        /* ========== ХЭСЭГҮҮД ========== */
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin: 40px 0 30px;
+            color: #1a1a2e;
+        }
+
+        .section-title span {
+            color: #e94560;
+        }
+
+        /* ========== БҮТЭЭГДЭХҮҮНИЙ КАРТ ========== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 40px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .product-info .price {
+            font-size: 22px;
+            color: #e94560;
+            font-weight: bold;
+        }
+
+        .product-info .old-price {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .product-info .rating {
+            color: #ffc107;
+            margin: 8px 0;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #e94560;
+        }
+
+        /* ========== ДАВУУ ТАЛ ========== */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .feature .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+            color: #1a1a2e;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ========== ЗАХИАЛАГЫН ФОРМ ========== */
+        .order-section {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .order-form {
+            max-width: 500px;
+            margin: 30px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-form input,
+        .order-form textarea {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .order-form button {
+            padding: 15px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .order-form button:hover {
+            background: #c81e45;
+        }
+
+        /* ========== ХОЛБОГДОХ ========== */
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* ========== ФУУТЕР ========== */
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+
+        /* ========== ХАВХЛУУР ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+
+        .modal-content .close-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* ========== МОБАЙЛ ========== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .products-grid {
+                padding: 10px 15px;
+                gap: 15px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ДЭЭД НАВИГАЦ ===== -->
+    <header>
+        <div class="logo">🛒 Mongol<span>Drop</span></div>
+        <nav>
+            <a href="#products">Бүтээгдэхүүн</a>
+            <a href="#order">Захиалах</a>
+            <a href="#contact">Холбогдох</a>
+        </nav>
+        <button class="cart-btn" onclick="showCart()">🛒 Сагс (<span id="cart-count">0</span>)</button>
+    </header>
+
+    <!-- ===== ГЭРР БАННЕР ===== -->
+    <section class="hero">
+        <h1>Шилдэг Бүтээгдэхүүнүүд</h1>
+        <p>Хурдан хүргэлт ✅ Үнэгүй хүргэлт ✅ Бодит бүтээгдэхүүн</p>
+        <button onclick="scrollToProducts()">🛍️ Худалдан авах</button>
+    </section>
+
+    <!-- ===== ДАВУУ ТАЛУУД ===== -->
+    <section class="features">
+        <div class="feature">
+            <div class="icon">🚚</div>
+            <h3>Хурдан Хүргэлт</h3>
+            <p>Улаанбаатар хотод 1-2 өдөрт хүргэнэ</p>
+        </div>
+        <div class="feature">
+            <div class="icon">💰</div>
+            <h3>Хямд Үнэ</h3>
+            <p>Зах зээлийн хамгийн хямд үнэ</p>
+        </div>
+        <div class="feature">
+            <div class="icon">✅</div>
+            <h3>Чанарын Баталгаа</h3>
+            <p>Асуудал гарвал 100% буцаана</p>
+        </div>
+        <div class="feature">
+            <div class="icon">💳</div>
+            <h3>Төлбөрийн Боломж</h3>
+            <p>Бэлэн мөнгө, шилжүүлэг, данс</p>
+        </div>
+    </section>
+
+    <!-- ===== БҮТЭЭГДЭХҮҮНҮҮД ===== -->
+    <h2 class="section-title" id="products">Шилдэг <span>Бүтээгдэхүүнүүд</span></h2>
+
+    <div class="products-grid" id="products-grid">
+        <!-- Жишээ бүтээгдэхүүн 1 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>Smart Watch Pro</h3>
+                <div class="rating">⭐⭐⭐⭐⭐ (47)</div>
+                <div>
+                    <span class="price">89,000₮</span>
+                    <span class="old-price">150,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('Smart Watch Pro', 89000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+
+        <!-- Жишээ бүтээгдэхүүн 2 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>Wireless Чихэвч</h3>
+                <div class="rating">⭐⭐⭐⭐ (32)</div>
+                <div>
+                    <span class="price">45,000₮</span>
+                    <span class="old-price">75,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('Wireless Чихэвч', 45000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+
+        <!-- Жишээ бүтээгдэхүүн 3 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>USB Led Гэрэл</h3>
+                <div class="rating">⭐⭐⭐⭐⭐ (89)</div>
+                <div>
+                    <span class="price">15,000₮</span>
+                    <span class="old-price">25,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('USB Led Гэрэл', 15000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+
+        <!-- Жишээ бүтээгдэхүүн 4 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>Усны Сав 750ml</h3>
+                <div class="rating">⭐⭐⭐⭐ (56)</div>
+                <div>
+                    <span class="price">25,000₮</span>
+                    <span class="old-price">40,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('Усны Сав 750ml', 25000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+
+        <!-- Жишээ бүтээгдэхүүн 5 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>LED Үнэртүүлэгч</h3>
+                <div class="rating">⭐⭐⭐⭐⭐ (124)</div>
+                <div>
+                    <span class="price">35,000₮</span>
+                    <span class="old-price">55,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('LED Үнэртүүлэгч', 35000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+
+        <!-- Жишээ бүтээгдэхүүн 6 -->
+        <div class="product-card">
+            <img class="product-image" src="https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=400" alt="Бүтээгдэхүүн">
+            <div class="product-info">
+                <h3>Power Bank 20000mAh</h3>
+                <div class="rating">⭐⭐⭐⭐ (73)</div>
+                <div>
+                    <span class="price">55,000₮</span>
+                    <span class="old-price">90,000₮</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('Power Bank 20000mAh', 55000)">
+                    🛒 Сагсанд нэмэх
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ЗАХИАЛАГЫН ФОРМ ===== -->
+    <section class="order-section" id="order">
+        <h2>📦 Захиалга Хийх</h2>
+        <p>Мэдээллээ бөглөөд захиалгаа илгээгээрэй!</p>
+        <form class="order-form" onsubmit="submitOrder(event)">
+            <input type="text" id="order-name" placeholder="Нэр*">
+            <input type="tel" id="order-phone" placeholder="Утасны дугаар*">
+            <input type="text" id="order-address" placeholder="Хаяг (Дүүрэг, хороо, байшин...)*">
+            <textarea id="order-products" placeholder="Худалдан авах бүтээгдэхүүнээ бичээрэй"></textarea>
+            <button type="submit">✅ Захиалга Илгээх</button>
+        </form>
+    </section>
+
+    <!-- ===== ХОЛБОГДОХ ===== -->
+    <h2 class="section-title" id="contact">Холбогдох <span>Мэдээлэл</span></h2>
+    <div class="contact-info">
+        <div class="contact-item">
+            <div class="icon">📱</div>
+            <h3>Утас</h3>
+            <p>+976 9999-8888</p>
+        </div>
+        <div class="contact-item">
+            <div class="icon">📘</div>
+            <h3>Facebook</h3>
+            <p>MongolDrop</p>
+        </div>
+        <div class="contact-item">
+            <div class="icon">📍</div>
+            <h3>Хаяг</h3>
+            <p>Улаанбаатар, Монгол</p>
+        </div>
+    </div>
+
+    <!-- ===== ФУУТЕР ===== -->
+    <footer>
+        <div class="logo" style="font-size:20px; margin-bottom:15px;">🛒 Mongol<span style="color:#e94560;">Drop</span></div>
+        <p>© 2025 MongolDrop. Бүх эрх хуулиар хамгаалагдсан.</p>
+        <p>🚚 Улаанбаатар хотод 1-2 өдөрт хүргэнэ</p>
+    </footer>
+
+    <!-- ===== САГСНЫ ХАВХЛУУР ===== -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <h2>🛒 Таны Сагс</h2>
+            <div id="cart-items"></div>
+            <p id="cart-total" style="font-size:20px; font-weight:bold; color:#e94560; margin:15px 0;"></p>
+            <button class="close-btn" onclick="closeCart()">Хаах</button>
+        </div>
+    </div>
+
+    <!-- ===== ЗАХИАЛГЫН АМЖИЛТТАЙ ===== -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <h2>✅ Захиалга Амжилттай!</h2>
+            <p>Таны захиалгыг хүлээн авлаа.<br>Бид тантай удахгүй холбогдоно!</p>
+            <button class="close-btn" onclick="closeSuccess()">За</button>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Сагс хадгалах
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Сагсанд нэмэх
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`"${name}" сагсанд нэмэгдлээ! 🛒`);
+        }
+
+        // Сагсны тоо шинэчлэх
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cart.length;
+        }
+
+        // Сагс харуулах
+        function showCart() {
+            const modal = document.getElementById('cart-modal');
+            const items = document.getElementById('cart-items');
+            const total = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                items.innerHTML = '<p>Сагс хоосон байна 😕</p>';
+                total.textContent = '';
+            } else {
+                let html = '<ul style="text-align:left; list-style:none;">';
+                let sum = 0;
+                cart.forEach((item, i) => {
+                    html += `<li style="padding:8px; border-bottom:1px solid #eee;">
+                        ${i + 1}. ${item.name} — <strong>${item.price.toLocaleString()}₮</strong>
+                    </li>`;
+                    sum += item.price;
+                });
+                html += '</ul>';
+                items.innerHTML = html;
+                total.textContent = `Нийт: ${sum.toLocaleString()}₮`;
+            }
+            modal.classList.add('show');
+        }
+
+        // Сагс хаах
+        function closeCart() {
+            document.getElementById('cart-modal').classList.remove('show');
+        }
+
+        // Захиалга илгээх
+        function submitOrder(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const address = document.getElementById('order-address').value;
+            const products = document.getElementById('order-products').value;
+
+            if (!name || !phone || !address) {
+                alert('⚠️ Та бүх талбарыг бөглөнө үү!');
+                return;
+            }
+
+            // Google Sheets эсвэл Formspree руу илгээх боломжтой
+            // Жишээ: window.location.href = `https://docs.google.com/forms/...`
+
+            // Дотооддоо хадгалах (демо)
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push({
+                name, phone, address, products,
+                date: new Date().toLocaleString('mn-MN'),
+                total: cart.reduce((s, i) => s + i.price, 0)
+            });
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Сагсыг цэвэрлэх
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Амжилттай мэдэгдэл
+            document.getElementById('success-modal').classList.add('show');
+
+            // Формыг цэвэрлэх
+            e.target.reset();
+        }
+
+        function closeSuccess() {
+            document.getElementById('success-modal').classList.remove('show');
+        }
+
+        // Бүтээгдэхүүн рүү скролл хийх
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Анхны төлөв
+        updateCartCount();
+    </script>
+
+</body>
+</html>
